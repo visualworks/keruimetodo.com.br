@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  vworks:
+    build:          $BASE/$DOMAIN/container/
+    image:          vworks
+    network_mode:   "bridge"
+    container_name: $DOMAIN
+    hostname:       $DOMAIN
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    dns_search: "google.com"
+    tty: true
+    privileged: true
+    env_file: $BASE/$DOMAIN/container/.env
+    volumes:
+      - $BASE/$DOMAIN/web:/var/www/hosts/$DOMAIN/web
+      - $BASE/$DOMAIN/logs:/var/www/hosts/$DOMAIN/logs
+      - $BASE/$DOMAIN/.ssh:/var/www/hosts/$DOMAIN/.ssh
+    ports:
+      - "22:22"
+      - "80:80"
+      - "443:443"
+      - "567:567"
+    environment:
+      - DOMAIN=$DOMAIN
+      - BASE=$BASE
